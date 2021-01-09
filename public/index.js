@@ -87,6 +87,7 @@ const horizontals = Array(cellsVertical - 1)
   .fill(null)
   .map(() => Array(cellsHorizontal).fill(false));
 
+// random starting point
 const startRow = Math.floor(Math.random() * cellsVertical);
 const startColumn = Math.floor(Math.random() * cellsHorizontal);
 
@@ -95,7 +96,7 @@ const stepThroughCell = (row, column) => {
   if (grid[row][column]) {
     return;
   }
-  //mark this cell as being visited, make it true
+  // mark this cell as being visited, make it true
   grid[row][column] = true;
   //assemble randomly-ordered list of neighbors
   const neighbors = shuffle([
@@ -105,7 +106,7 @@ const stepThroughCell = (row, column) => {
     [row, column - 1, 'left'],
   ]);
   // console.log(neighbors);
-  //for each neighbor...
+
   for (let neighbor of neighbors) {
     const [nextRow, nextColumn, direction] = neighbor;
 
@@ -134,7 +135,7 @@ const stepThroughCell = (row, column) => {
     } else if (direction === 'down') {
       horizontals[row][column] = true;
     }
-    //visit that next cell, recursion
+    // visit that next cell, recursion
     stepThroughCell(nextRow, nextColumn);
   }
 };
@@ -219,13 +220,13 @@ const ball = Bodies.circle(unitLengthX / 2, unitLengthY / 2, ballRadius, {
 World.add(world, ball);
 
 document.addEventListener('keydown', (event) => {
-  const { x, y } = ball.velocity; //current velocity
+  const { x, y } = ball.velocity; // current velocity
   // console.log(x, y);
-  //up (up arrow or W)
+  // up (up arrow or W)
   if (event.keyCode === 38 || event.keyCode === 87) {
     Body.setVelocity(ball, { x, y: y - 3.5 });
   }
-  // Right (right arow or D)
+  // Right (right arrow or D)
   if (event.keyCode === 39 || event.keyCode === 68) {
     Body.setVelocity(ball, { x: x + 3.5, y });
   }
@@ -257,7 +258,7 @@ Events.on(engine, 'collisionStart', (event) => {
       Body.setStatic(ball, true);
       world.bodies.forEach((body) => {
         if (body.label === 'wall') {
-          Body.setStatic(body, false); //remove static flag
+          Body.setStatic(body, false); // remove static flag
         }
       });
     }
